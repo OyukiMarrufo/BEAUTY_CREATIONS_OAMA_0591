@@ -12,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($resultado->num_rows == 1) {
         $usuario = $resultado->fetch_assoc();
         
-        // Verificar la contraseña encriptada
         if (password_verify($password, $usuario['password'])) {
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_nombre'] = $usuario['nombre'];
@@ -29,85 +28,119 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Beauty Creations - Iniciar Sesion</title>
+    <title>Beauty Creations - Iniciar Sesión</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #fafafa;
+    }
+
     header {
         background-color: #FFB6C1;
-        padding: 25px;
+        padding: 35px 20px;
         color: white;
-        display: table;
-        width: 100%;
-        box-sizing: border-box; /*Sirve para el ancho,alto y bordes*/
+        text-align: center;
+        box-sizing: border-box;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
 
     header h1 { 
         margin: 0; 
-        font-size: 100px; 
-        text-transform: uppercase; /*Muestra todo el texto seleccionado en mayusculas*/
-        letter-spacing: 40px; /*Espacio entre las letras*/
+        font-size: 75px; 
+        text-transform: uppercase;
+        letter-spacing: 25px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
     }
 
-    .header-col {
-        display: table-cell; /*Añadido para estructurar las columnas de la tabla*/
-        vertical-align: middle;/*Centra un elemento en linea recta*/
+    header p { font-size: 20px; margin-top: 10px; }
+
+    nav { 
+        background-color: #90EE90; 
+        padding: 12px 20px; 
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    nav ul { 
+        list-style-type: none; 
+        margin: 0; 
+        padding: 0; 
+        display: flex;
+        align-items: center;
     }
 
-    .col-titulo { 
-        width: 50%; 
-        text-align: center; 
-    }
-
-    nav { background-color: #90EE90; padding: 10px 0; } /*Color y tamaño de la barra de navegacion*/
-    nav ul { list-style-type: none; margin: 0; padding: 0; text-align: center; } /*Texto de la barra centrado*/
-    nav ul li { display: inline; margin: 0 20px; } /*Apartados de la barra subrayados*/
+    nav ul.menu-centrado li { margin: 0 12px; } 
+    nav ul.menu-derecha { position: absolute; right: 25px; }
+    nav ul.menu-derecha li { margin-left: 15px; }
+    
     nav ul li a {
-        color: black;
-        text-decoration: none;/*Quita cualquier linea decorativa del texto*/
-        font-weight: bold;/*Texto en negrita*/
+        color: #111;
+        text-decoration: none;
+        font-weight: bold;
         font-size: 18px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover, nav ul li a.activo {
+        background-color: rgba(255, 255, 255, 0.6);
+        color: #d81b60;
+    }
+
+    .btn-icon-sesion {
+        font-size: 22px;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .contenedor-cuerpo {
-        padding: 40px;
-        text-align: center;
-        min-height: 400px; /*Altura minima*/
-        display: flex; /*Organiza y alinea los elementos*/
-        justify-content: center; /*Centra los elementos horizontalmente*/
-        align-items: center; /*Centra los elemrntos verticalmente*/
+        padding: 50px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #FFE4C4;
+        min-height: 420px;
     }
 
     .card-login { 
         background-color: #ffffff; 
         color: #1f2937; 
-        border-radius: 12px; 
-        padding: 35px 40px; 
+        border-radius: 20px; 
+        padding: 40px; 
         width: 100%; 
-        max-width: 480px; 
+        max-width: 450px; 
         text-align: center; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
     }
 
     .card-title { 
-        font-size: 24px; 
+        font-size: 26px; 
         font-weight: bold; 
         color: #0f172a; 
-        margin-bottom: 20px; 
+        margin-bottom: 25px; 
+        margin-top: 0;
     }
 
-    /* Estilos del formulario dentro de la tarjeta */
     .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         text-align: left;
     }
 
     .form-group label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         font-weight: bold;
         color: #333;
     }
@@ -120,30 +153,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     .input-container i {
         position: absolute;
-        left: 10px;
+        left: 12px;
         color: #888;
     }
 
     .input-container input {
         width: 100%;
-        padding: 10px 10px 10px 35px;
+        padding: 12px 12px 12px 40px;
         border: 1px solid #ccc;
-        border-radius: 6px;
+        border-radius: 8px;
         font-size: 16px;
         box-sizing: border-box;
     }
 
     .btn-login {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         background-color: #FFB6C1;
         color: white;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         font-size: 18px;
         font-weight: bold;
         cursor: pointer;
-        margin-top: 15px;
+        margin-top: 10px;
         transition: background-color 0.3s;
     }
 
@@ -153,34 +186,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     footer {
         background-color: #7FFFD4;
-        padding: 30px;
+        padding: 25px;
         text-align: center;
         color: black;
-        font-size: 20px;
+        font-size: 18px;
         width: 100%;
-        box-sizing: border-box; /*Incluye relleno y bordes dentro del ancho y alto*/
-        margin-top: 20px; /*Agerga un espacio en la parte superior de un elemento, separándolo de lo que tenga justo encima*/
+        box-sizing: border-box;
+        margin-top: 20px;
     }
 </style>
 
 <body>
     <header>
-        <div class="header-col col-titulo">
+        <div class="col-titulo">
             <h1>BEAUTY CREATIONS</h1> 
             <p><em>"Aqui encontraras los mejores productos de maquillaje"</em></p>
         </div>
     </header>
  
     <nav>
-        <ul>
+        <ul class="menu-centrado">
             <li><a href="index.php">Inicio</a></li>
             <li><a href="productos.php">Productos</a></li>
-            <li><a href="sesion.php" class="activo">Iniciar Sesion</a></li>
+            <li><a href="nuevo.php">Nuevo</a></li>
+            <li><a href="collabs.php">Collabs</a></li>
+            <li><a href="tendencia.php">Tendencia</a></li>
+        </ul>
+        <ul class="menu-derecha">
             <li><a href="registrar.php">Registrarme</a></li>
+            <li><a href="sesion.php" title="Iniciar Sesión" class="btn-icon-sesion activo"><i class="fa-solid fa-user"></i></a></li>
         </ul>
     </nav>
 
-    <!-- FORMULARIO DE INICIO DE SESIÓN -->
     <main class="contenedor-cuerpo">
         <div class="card-login">
             <h2 class="card-title">Iniciar Sesión</h2>
